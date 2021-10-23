@@ -8,7 +8,7 @@ import java.util.Random;
 public class CifradoAES {
     
     /*VARIABLES*/
-    public static final String sIv = "AES/CBC/PKS5Padding";
+    public static final String sIv = "AES/CBC/PKCS5Padding";
     private SecretKeySpec sKeySpec;
     private Cipher objetoCifrado;
     IvParameterSpec ivspec;
@@ -28,12 +28,16 @@ public class CifradoAES {
         byte[] llaveBytes = llaveSecreta.getEncoded();
 
         //Creamos la llave secreta especificando que usamos el algoritmo AES
+        //sKeySpec sirve para construir una secretKey desde un array de bytes ,sin tener que usar un 
+        //provider-based SecretKeyFactory
+        //tambien sirve para especificar que el algoritmo que queremos utilizar es el AES
         sKeySpec = new SecretKeySpec(llaveBytes, "AES");
         
         //Con esto generamos un torrente de bytes random que luego utilizaremos
         byte[] iv = new byte[128/8];
         Random srandom = new Random();
         srandom.nextBytes(iv);
+        
         ivspec = new IvParameterSpec(iv);
 
     }
@@ -50,6 +54,7 @@ public class CifradoAES {
         //Encriptamoos todo el mensaje
         byte[] mensajeBytes = new byte[(int) archivo.length()];
         //Creamos un objeto de input stream para leer el fichero y metemos lo que leamos al array de bytes
+        //finalmentecerramos el fichero
         FileInputStream ficheroInput = new FileInputStream(archivo);
         ficheroInput.read(mensajeBytes);
         ficheroInput.close();
@@ -59,5 +64,10 @@ public class CifradoAES {
         mensajeEncriptado[0] = new String(Base64.getEncoder().encode(mensajeBytesEncriptado));
 
         return mensajeEncriptado;
+    }
+
+    public String getPrivateKey(){
+        byte[] llavePrivada = sKeySpec.getEncoded();
+        return Base64.getEncoder().encodeToString(llavePrivada);
     }
 }
