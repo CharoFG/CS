@@ -3,6 +3,8 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 import java.util.Base64;
 import java.io.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.util.Random;
 
 public class CifradoAES {
@@ -43,9 +45,10 @@ public class CifradoAES {
     }
 
 
-    /*Metodo que encripta un archivo que le pasamos por parametro
+    /*Metodo que encripta un archivo cuyo path le pasamos por parametro
     Devuelve el mensaje encriptado en String y el nombre del archivo*/
-    public String[] encriptar (File archivo) throws Exception {
+    public String[] encriptar (String path) throws Exception {
+        File archivo = new File(path);
         String[] mensajeEncriptado = new String[2];
         mensajeEncriptado[1] = archivo.getName();
 
@@ -63,9 +66,31 @@ public class CifradoAES {
 
         mensajeEncriptado[0] = new String(Base64.getEncoder().encode(mensajeBytesEncriptado));
 
+        crearArchivoEncriptado(mensajeEncriptado[0], path);
         return mensajeEncriptado;
     }
 
+    //Crea un archivo encriptado, para ello recoge un string con el mensaje encriptado, lo pasa a bytes y lo escribe en otro archivo
+    public void crearArchivoEncriptado(String mensajeEncriptado, String path) throws IOException{
+        String pathNuevo = path.concat(".enc");
+        FileOutputStream outputStream = new FileOutputStream(pathNuevo);
+        byte[] strToBytes = mensajeEncriptado.getBytes();
+        outputStream.write(strToBytes);
+
+        outputStream.close();
+    }
+
+    public void desencriptarArchivo(String s) throws InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException{
+        objetoCifrado.init(Cipher.DECRYPT_MODE, sKeySpec, ivspec);
+
+        byte[] desencriptado = objetoCifrado.doFinal(Base64.getDecoder().decode(s));
+
+        FileOutputStream outputStream = new FileOutputStream("C:/Users/Charo/Desktop/Ricky2.jpg");
+        outputStream.write(desencriptado);
+
+        outputStream.close();
+        
+    }
     public String getPrivateKey(){
         byte[] llavePrivada = sKeySpec.getEncoded();
         return Base64.getEncoder().encodeToString(llavePrivada);
