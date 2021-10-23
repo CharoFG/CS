@@ -9,8 +9,9 @@ import java.io.IOException;
 
 public class desencripta {
     public static void main(String args, String llave) throws Exception {
-        File inputFile1 = new File(args);
-        decrypt(inputFile1, llave);
+        File inputFile = new File(args);
+        decrypt(inputFile, llave);
+        inputFile.delete();
 
     }
 
@@ -41,7 +42,6 @@ public class desencripta {
                     }
 
                     fileWriter.write(buffer, 0, bytesCopied);
-                    System.out.println("des file length= " + destinationFile.length());
 
                 }
                 fileReader.close();
