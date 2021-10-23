@@ -19,23 +19,16 @@ public class prueba {
         SecretKey key = keyGen.generateKey();
         File inputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/word.docx");
         File inputFile1 = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/word.docx.enc");
-        File outputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/txt/encrypted.txt");
-        File outputFile2 = new File("C:/Users/fran_/desktop/CS/seguridad/files/txt/unencrypted2.txt");
 
         byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);
         IvParameterSpec ivdef = new IvParameterSpec(iv);
-
-        // encryptFile("AES/CBC/PKCS5Padding", key, ivdef, inputFile, outputFile);
 
         String[] sep = key.toString().split("@");
         System.out.println(sep[1]);
         String keyString = sep[1];
         encrypt(inputFile, keyString);
         decrypt(inputFile1, keyString);
-        // decryptFile("AES/CBC/PKCS5Padding", key, ivdef, outputFile, outputFile2);
-        // decrypt(inputFile1, "AES/CBC/PKCS5Padding", key, ivdef);
-
     }
 
     private static byte[] getHashInBytes(String key) throws NoSuchAlgorithmException {
@@ -50,7 +43,6 @@ public class prueba {
         System.out.println("hashOfPassword length= " + hashOfPassword.length());
         System.out.println("hashOfPassword = " + hashOfPassword);
         return hashOfPassword.getBytes();
-
     }
 
     public static void encrypt(File file, String key) {
