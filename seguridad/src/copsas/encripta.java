@@ -57,7 +57,7 @@ public class encripta {
                 BufferedInputStream fileReader = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
                 FileOutputStream fileWriter = new FileOutputStream(destinationFile, true);
 
-                // Escribimos el archivo con la clave generada aleatoriamente
+                // Escribimos en el archivo la clave generada
 
                 fileWriter.write(keyHash, 0, 128);
                 // encriptamos el contenido y lo escribimos en el "destinationFile"
