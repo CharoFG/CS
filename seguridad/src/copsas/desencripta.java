@@ -1,33 +1,16 @@
+package copsas;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class desencripta {
     public static void main(String args, String llave) throws Exception {
-
-        //KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        //keyGen.init(128);
-        //SecretKey key = keyGen.generateKey();
         File inputFile1 = new File(args);
-
-        //byte[] iv = new byte[16];
-        //new SecureRandom().nextBytes(iv);
-        //IvParameterSpec ivdef = new IvParameterSpec(iv);
-
-        //String[] sep = key.toString().split("@");
-        //System.out.println(sep[1]);
-        //String keyString = sep[1];
         decrypt(inputFile1, llave);
-
 
     }
 
