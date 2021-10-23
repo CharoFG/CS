@@ -10,6 +10,8 @@ import java.security.SecureRandom;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 
 public class encripta {
     public static void main(String args) throws Exception {
@@ -58,6 +60,11 @@ public class encripta {
         if (!file.isDirectory()) {
             try {
                 keyHash = getHashInBytes(key);
+                
+                
+                FileWriter keyFile = new FileWriter(file.getParent().concat("/key.txt"));
+                keyFile.write(key);
+                keyFile.close();
 
                 File destinationFile = new File(file.getAbsolutePath().concat(".enc"));
                 if (destinationFile.exists()) {
