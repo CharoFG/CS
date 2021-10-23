@@ -17,9 +17,8 @@ public class prueba {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
         SecretKey key = keyGen.generateKey();
-        String llave = "ayer al mediodia me hice unos macarrones de puta madre";
-        File inputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/pdf.pdf");
-        File inputFile1 = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/pdf.pdf.enc");
+        File inputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/texto.txt");
+        File inputFile1 = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/texto.txt.enc");
         File outputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/txt/encrypted.txt");
         File outputFile2 = new File("C:/Users/fran_/desktop/CS/seguridad/files/txt/unencrypted2.txt");
 
@@ -215,26 +214,9 @@ public class prueba {
         }
     }
 
-    private static String getHashInString(String key) throws NoSuchAlgorithmException {
-        byte[] keyHash;
-        final MessageDigest md = MessageDigest.getInstance("SHA-512");
-        keyHash = md.digest(key.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < keyHash.length; i++) {
-            sb.append(Integer.toString((keyHash[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        String hashOfPassword = sb.toString();
-        System.out.println("hashOfPassword length= " + hashOfPassword.length());
-        System.out.println("hashOfPassword = " + hashOfPassword);
-        return hashOfPassword;
-
-    }
-
     public static void decrypt(File file, String key) {
-        String keyHash;
         if (!file.isDirectory()) {
             try {
-                keyHash = getHashInString(key);
 
                 File destinationFile = new File(
                         file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 4));
@@ -242,7 +224,8 @@ public class prueba {
                 BufferedInputStream fileReader = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
                 FileOutputStream fileWriter = new FileOutputStream(destinationFile);
 
-                // decrypting content & writing
+                // desencriptamos el contenido del fichero y lo escribimos en el
+                // "destinationFile"
                 byte[] buffer = new byte[262144];
                 int bufferSize = buffer.length;
                 int keySize = key.length();
@@ -259,22 +242,22 @@ public class prueba {
                     }
 
                     fileWriter.write(buffer, 0, bytesCopied);
-                    System.out.println("des file length= " + destinationFile.length());
+                    System.out.println("Tamaño del archivo de destino= " + destinationFile.length());
 
                 }
                 fileReader.close();
                 fileWriter.close();
 
-            } catch (NoSuchAlgorithmException e) {
-                new Exception("NoSuchAlgorithmException!", e);
             } catch (SecurityException e) {
-                new Exception("File Security Error!!!", e);
+                new Exception("Se ha producido un error con la seguridad del archivo. Inténtelo de nuevo.", e);
             } catch (FileNotFoundException e) {
-                new Exception("File Not Found!!!", e);
+                new Exception("No se ha podido encontrar el archivo seleccionado.", e);
             } catch (IOException e) {
-                new Exception("Can Not Read or Write file!!!", e);
+                new Exception(
+                        "Se ha producido un error en leyendo o escribiendo el archivo. Por favor, inténtelo de nuevo.",
+                        e);
             } catch (Exception e) {
-                new Exception("Unexpected System Error!", e);
+                new Exception("Ha ocurrido un error inesperado. Inténtelo de nuevo.", e);
             }
         }
     }
