@@ -17,12 +17,13 @@ public class prueba {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
         SecretKey key = keyGen.generateKey();
-        File inputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/word.docx");
-        File inputFile1 = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/word.docx.enc");
+        File inputFile = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/pdf.pdf");
+        File inputFile1 = new File("C:/Users/fran_/desktop/CS/seguridad/files/filesToEncrypt/pdf.pdf.enc");
 
         byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);
         IvParameterSpec ivdef = new IvParameterSpec(iv);
+        System.out.println(key);
 
         String[] sep = key.toString().split("@");
         System.out.println(sep[1]);
@@ -33,6 +34,7 @@ public class prueba {
 
     private static byte[] getHashInBytes(String key) throws NoSuchAlgorithmException {
         byte[] keyHash;
+
         final MessageDigest md = MessageDigest.getInstance("SHA-512");
         keyHash = md.digest(key.getBytes());
         StringBuilder sb = new StringBuilder();
@@ -63,6 +65,7 @@ public class prueba {
                 // Escribimos el archivo con la clave generada aleatoriamente
 
                 fileWriter.write(keyHash, 0, 128);
+                
                 // encriptamos el contenido y lo escribimos en el "destinationFile"
                 byte[] buffer = new byte[262144];
                 int bufferSize = buffer.length;
